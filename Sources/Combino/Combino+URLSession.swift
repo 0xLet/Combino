@@ -9,12 +9,12 @@ public struct CombinoPostError: Error {
 
 public extension Combino {
     static func post(request: URLRequest) -> Future<(Data?, URLResponse?), Error> {
-        Future { promise in
+        Combino.promise { promise in
             URLSession.shared
                 .dataTask(with: request) { (data, response, error) in
                     if let error = error {
                         promise(.failure(CombinoPostError(error: error,
-                                                        response: response)))
+                                                          response: response)))
                     }
                     promise(.success((data, response)))
             }
@@ -38,7 +38,21 @@ public extension Combino {
 public extension Combino {
     @discardableResult
     static func fetch(url: URL) -> Future<(Data?, URLResponse?), Error> {
-        Future { promise in
+        Combino.promise { promise in
+            URLSession.shared
+                .dataTask(with: url) { (data, response, error) in
+                    if let error = error {
+                        promise(.failure(error))
+                    }
+                    promise(.success((data, response)))
+            }
+            .resume()
+        }
+    }
+    
+    @discardableResult
+    static func fetch(url: URLRequest) -> Future<(Data?, URLResponse?), Error> {
+        Combino.promise { promise in
             URLSession.shared
                 .dataTask(with: url) { (data, response, error) in
                     if let error = error {
