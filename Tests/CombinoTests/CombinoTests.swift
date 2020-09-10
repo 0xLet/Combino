@@ -76,7 +76,7 @@ final class CombinoTests: XCTestCase {
         
         Combino
             .post(url: URL(string: "https://postman-echo.com/post")!) {
-            "Some Data".data(using: .utf8)!
+                "Some Data".data(using: .utf8)!
         }
         .sink(receiveCompletion: { result in
             if case .failure = result {
@@ -103,8 +103,8 @@ final class CombinoTests: XCTestCase {
                 sema.signal()
             }) { (data, response) in
                 XCTAssert(false)
-            }
-            .store(in: &bag)
+        }
+        .store(in: &bag)
         
         sema.wait()
     }
