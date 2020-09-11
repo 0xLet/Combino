@@ -49,7 +49,7 @@ Combino
     .store(in: &bag)
 ```
 
-### .sink(() -> [SinkEvents])
+### .sink(() -> [SinkEvent])
 ```swift
 Combino
     .do(withDelay: 5) {
