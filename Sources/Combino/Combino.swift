@@ -24,28 +24,24 @@ public class Combino {
     public static func `do`<T>(withDelay delay: UInt32 = 0,
                                work: @escaping () throws -> T) -> Future<T, Error> {
         Combino.promise { promise in
-            DispatchQueue.global().async {
-                sleep(delay)
-                do {
-                    promise(.success(try work()))
-                } catch {
-                    promise(.failure(error))
-                }
+            sleep(delay)
+            do {
+                promise(.success(try work()))
+            } catch {
+                promise(.failure(error))
             }
         }
     }
     
     @discardableResult
     public static func `do`(withDelay delay: UInt32 = 0,
-                            work: @escaping () throws -> Void) -> Future<Void, Error> {
+                            work: @escaping () throws -> Void = {}) -> Future<Void, Error> {
         Combino.promise { promise in
-            DispatchQueue.global().async {
-                sleep(delay)
-                do {
-                    promise(.success(try work()))
-                } catch {
-                    promise(.failure(error))
-                }
+            sleep(delay)
+            do {
+                promise(.success(try work()))
+            } catch {
+                promise(.failure(error))
             }
         }
     }
@@ -53,6 +49,21 @@ public class Combino {
     @discardableResult
     public static func main<T>(withDelay delay: UInt32 = 0,
                                work: @escaping () throws -> T) -> Future<T, Error> {
+        Combino.promise { promise in
+            sleep(delay)
+            DispatchQueue.main.async {
+                do {
+                    promise(.success(try work()))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+    }
+    
+    @discardableResult
+    public static func main(withDelay delay: UInt32 = 0,
+                            work: @escaping () throws -> Void = {}) -> Future<Void, Error> {
         Combino.promise { promise in
             sleep(delay)
             DispatchQueue.main.async {
