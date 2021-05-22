@@ -1,5 +1,7 @@
 # Combino
 
+## ⚠️ Development has been moved to [Task](https://github.com/0xLeif/Task)
+
 ### promise
 ```swift
 promise<T>(work: @escaping (@escaping Future<T, Error>.Promise) -> Void) -> Future<T, Error>
